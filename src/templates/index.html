@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Transfer</title>
+</head>
+<body>
+    <h1>Upload File</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+    <h1>File List</h1>
+    <ul id="file-list"></ul>
+    <script>
+        async function fetchFiles() {
+            const response = await fetch('/files');
+            const data = await response.json();
+            const fileList = document.getElementById('file-list');
+            fileList.innerHTML = '';
+            data.files.forEach(file => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `/files/${file}`;
+                link.textContent = file;
+                li.appendChild(link);
+                fileList.appendChild(li);
+            });
+        }
+        fetchFiles();
+    </script>
+</body>
+</html>
